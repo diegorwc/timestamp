@@ -2,6 +2,7 @@
 // where your node app starts
 
 // init project
+require('dotenv').config()
 var express = require('express');
 var app = express();
 
@@ -23,6 +24,19 @@ app.get("/", function (req, res) {
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
+
+app.get("/api/:date/", function(req, res) {
+  const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
+  if(dateRegex.test(req.params.date)) {
+    let unixDate = Number(Date.parse(req.params.date))
+    res.json({'unix': unixDate})
+  }
+  res.json({'error': 'Invalid Date'})
+  // console.log(dateRegex.test(req.params.date))
+  // console.log(typeof req.params.date)
+  // let dateToUnix = new Date(req.params.date)
+  // console.log(Number(Date.parse(dateToUnix)))  
+})
 
 
 
