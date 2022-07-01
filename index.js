@@ -28,10 +28,18 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date/", function(req, res) {
   const dateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
   if(dateRegex.test(req.params.date)) {
+    let dateObj = new Date(req.params.date)
     let unixDate = Number(Date.parse(req.params.date))
-    res.json({'unix': unixDate})
+    let splitDate = req.params.date.split('-')    
+    let utcDate = dateObj.toUTCString()
+    res.json({
+      'unix': unixDate,
+      'utc': utcDate
+    })
+  } else {
+    res.json({'error': 'Invalid Date'})  
   }
-  res.json({'error': 'Invalid Date'})
+  
   // console.log(dateRegex.test(req.params.date))
   // console.log(typeof req.params.date)
   // let dateToUnix = new Date(req.params.date)
