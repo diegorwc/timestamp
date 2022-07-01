@@ -29,7 +29,7 @@ app.get("/api/", function(req, res) {
   let now = new Date()
   res.json({
     'unix': Number(now.getTime()),
-    'utc': new Date().toUTCString()
+    'utc': now.toUTCString()
   })
 })
 
