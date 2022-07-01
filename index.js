@@ -39,7 +39,7 @@ app.get("/api/:date/", function(req, res) {
     })
   } else if(/[1-9]\d+/.test(req.params.date)) {
     res.json({
-      'unix': req.params.date,
+      'unix': Number(req.params.date),
       'utc': new Date(Number(req.params.date)).toUTCString()
     })
   } 
