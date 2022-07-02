@@ -34,50 +34,27 @@ app.get("/api/", function(req, res) {
 })
 
 app.get("/api/:date/", function(req, res) {
-  console.log(typeof req.params.date)
-  const dateRegex = /^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$/    
-  // req.params.date = req.params.date.replace(/'/g, '')
-  let dateSplit = req.params.date.split(/[\D\W]/)  
-  console.log(dateSplit)
-  // console.log(parseInt(tst))
-  // if(dateRegex.test(req.params.date)) {
-  if(/\d/.test(req.params.date)) {
-    
-  } 
-  if(req.params.date.includes('-')) {
-    let dateObj = new Date(req.params.date)    
-    let unixDate = Number(Date.parse(req.params.date))
-    let splitDate = req.params.date.split('-')    
-    let utcDate = dateObj.toUTCString()            
-    res.json({
-      'unix': unixDate,
-      'utc': utcDate
-    })
-  // } else if(/[1-9]\d*/.test(req.params.date)) {                  
-  } else if(!req.params.date.includes('-')) {   
-      let unixD = ''
-      let utcD = ''
-      if(req.params.date.includes("'")) {
-        unixD = Date.parse(req.params.date)
-        utcD = unixD.toUTCString()
-      } else {
-        console.log(req.params.date)
-        unixD = Number(req.params.date)
-        utcD = new Date(unixD).toUTCString()
-      }  
-      res.json({
-        'unix': unixD,
-        'utc': utcD
-      })
+  // const receivedDate = req.params.date.replace(/'/g, '')
+  const receivedDate = req.params.date
+  let unixTimestamp = ''
+  let utcString = ''
+  
+  if(receivedDate.includes('-') | receivedDate.includes("'")) {
+    console.log('here?')
+    unixTimestamp = Date.parse(receivedDate)
+    utcString = new Date(receivedDate).toUTCString()
+  } else {
+    console.log('aqui')
+    unixTimestamp = receivedDate
+    utcString = new Date(Number(receivedDate)).toUTCString()
   }
-  else {
-    res.json({'error': 'Invalid Date'})  
-  }
+  
+  if (unixTimestamp == '') res.json ({'error': 'Invalid Date'})
 
-  // console.log(dateRegex.test(req.params.date))
-  // console.log(typeof req.params.date)
-  // let dateToUnix = new Date(req.params.date)
-  // console.log(Number(Date.parse(dateToUnix)))  
+  res.json({
+    'unix': Number(unixTimestamp),
+    'utc': utcString
+  })
 })
 
 
