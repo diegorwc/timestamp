@@ -36,11 +36,15 @@ app.get("/api/", function(req, res) {
 app.get("/api/:date/", function(req, res) {
   console.log(typeof req.params.date)
   const dateRegex = /^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$/    
-  req.params.date = req.params.date.replace(/'/g, '')
+  // req.params.date = req.params.date.replace(/'/g, '')
   let dateSplit = req.params.date.split(/[\D\W]/)  
   console.log(dateSplit)
   // console.log(parseInt(tst))
-  if(dateRegex.test(req.params.date)) {
+  // if(dateRegex.test(req.params.date)) {
+  if(/\d/.test(req.params.date)) {
+    
+  } 
+  if(req.params.date.includes('-')) {
     let dateObj = new Date(req.params.date)    
     let unixDate = Number(Date.parse(req.params.date))
     let splitDate = req.params.date.split('-')    
@@ -49,11 +53,18 @@ app.get("/api/:date/", function(req, res) {
       'unix': unixDate,
       'utc': utcDate
     })
-  } else if(/[1-9]\d+/.test(req.params.date)) {
-    res.json({
-      'unix': Number(req.params.date),
-      'utc': new Date(req.params.date).toUTCString()
-    })
+  // } else if(/[1-9]\d*/.test(req.params.date)) {                  
+  } else if(!req.params.date.includes('-')) {   
+      let unixD = ''
+      if(req.params.date.includes("'")) {
+        unixD = Date.parse(req.params.date)
+      } else {
+        unixD = Number(req.params.date)
+      }  
+      res.json({
+        'unix': unixD,
+        'utc': new Date(Number(Date.parse(req.params.date))).toUTCString()
+      })
   }
   else {
     res.json({'error': 'Invalid Date'})  
