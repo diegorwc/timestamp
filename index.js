@@ -37,9 +37,11 @@ app.get("/api/:date/", function(req, res) {
   console.log(typeof req.params.date)
   const dateRegex = /^(\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]))$/    
   req.params.date = req.params.date.replace(/'/g, '')
+  let dateSplit = req.params.date.split(/[\D\W]/)  
+  console.log(dateSplit)
   // console.log(parseInt(tst))
   if(dateRegex.test(req.params.date)) {
-    let dateObj = new Date(req.params.date)
+    let dateObj = new Date(req.params.date)    
     let unixDate = Number(Date.parse(req.params.date))
     let splitDate = req.params.date.split('-')    
     let utcDate = dateObj.toUTCString()            
@@ -50,7 +52,7 @@ app.get("/api/:date/", function(req, res) {
   } else if(/[1-9]\d+/.test(req.params.date)) {
     res.json({
       'unix': Number(req.params.date),
-      'utc': new Date(Number(req.params.date)).toUTCString()
+      'utc': new Date(req.params.date).toUTCString()
     })
   }
   else {
