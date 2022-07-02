@@ -56,14 +56,18 @@ app.get("/api/:date/", function(req, res) {
   // } else if(/[1-9]\d*/.test(req.params.date)) {                  
   } else if(!req.params.date.includes('-')) {   
       let unixD = ''
+      let utcD = ''
       if(req.params.date.includes("'")) {
         unixD = Date.parse(req.params.date)
+        utcD = unixD.toUTCString()
       } else {
+        console.log(req.params.date)
         unixD = Number(req.params.date)
+        utcD = new Date(unixD).toUTCString()
       }  
       res.json({
         'unix': unixD,
-        'utc': new Date(Number(Date.parse(req.params.date))).toUTCString()
+        'utc': utcD
       })
   }
   else {
