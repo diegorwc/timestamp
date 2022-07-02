@@ -40,9 +40,9 @@ app.get("/api/:date?/", function(req, res) {
   let unixTimestamp = ''
   let utcString = ''
 
-  if(!/\d/.test(receivedDate)) {
-    return res.json({'error': 'Invalid Date'})
-  }
+  // if(!/\d/.test(receivedDate)) {
+  //   return res.json({'error': 'Invalid Date'})
+  // }
 
   if(receivedDate.includes('-')) {
     console.log('here?')    
@@ -53,6 +53,11 @@ app.get("/api/:date?/", function(req, res) {
     receivedDate = req.params.date.replace(/'/g, '')
     unixTimestamp = receivedDate
     utcString = new Date(Number(receivedDate)).toUTCString()
+  } else if (new Date(receivedDate) != 'Invalid Date') {
+    unixTimestamp = Date.parse(receivedDate)
+    utcString = receivedDate
+  } else {
+    return res.json({'error': 'Invalid Date'})
   }
     
 
