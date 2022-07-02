@@ -35,6 +35,7 @@ app.get("/api/", function(req, res) {
 
 
 app.get("/api/:date?/", function(req, res) {
+  console.log(req.params.date)
   // const receivedDate = req.params.date.replace(/'/g, '')
   let receivedDate = req.params.date
   let unixTimestamp = ''
