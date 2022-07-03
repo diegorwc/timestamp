@@ -26,10 +26,16 @@ app.get("/api/hello", function(req, res) {
 });
 
 app.get("/api/", function(req, res) {
-  let now = new Date()
+  const now = new Date()
+  console.log("/api/")
+  console.log(new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getUTCDate())))
+  console.log({
+    'unix': Number(new Date().getTime()),
+    'utc': new Date().toUTCString()
+  })
   res.json({
-    'unix': Number(now.getTime()),
-    'utc': now.toUTCString()
+    'unix': Number(new Date().getTime()),
+    'utc': new Date().toUTCString()
   })
 })
 
